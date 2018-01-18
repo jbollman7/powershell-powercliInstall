@@ -46,11 +46,16 @@ function installPowerShell() {
     } else {
         Write-Output 'Powershell is v5 or higher.'
     }
+    Try {
+        restartComputer
+    }Catch{
+        Write-Output 'did not restart'
+    }
 }
 
 function restartComputer() {
-    if (($PSVersionTable).Major -lt 5) {
-        Restart-computer -force
+    if ((($PSVersionTable).Major -lt 5) -and (test-path -Path 'C:\ProgramData\chocolatey\lib\Powershell')) {
+        Restart-computer -force -ErrorAction 0
     } 
 }
 
@@ -61,10 +66,10 @@ function installChocolatey(){
         Write-Output 'Checking if chocolatey is already installed.'
         $Test = Test-path -Path 'C:\ProgramData\chocolatey\bin\choco.exe'
         if ($Test) {
-            Write-Output 'Chocolatey is already installed. moving on.'
-        }else {
-            Write-Output 'Beginning Chocolatey install shortly'
+            Write-Output 'Chocolatey is already installed, moving on.'
         }
+    }Catch{
+        Write-Output 'Beginning Chocolatey install shortly'
     }
     Try {
         Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) -ErrorAction 0
