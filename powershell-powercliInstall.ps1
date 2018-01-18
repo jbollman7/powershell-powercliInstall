@@ -1,16 +1,16 @@
 function installPowerCLI (){
     if (($PSversiontable.psversion.major -ge 5) -and (Get-Module -name VMware.VimAutomation.Core).Version.Major -lt 6)  {
         Try {
-                Install-PackageProvider -Name Nuget -force -ErrorAction 0
+            Install-PackageProvider -Name Nuget -force -ErrorAction 0
         }Catch {
-                Write-Output 'Not able to install Nuget as package provider.'
+            Write-Output 'Not able to install Nuget as package provider.'
         }
         if (get-packageprovider -name Nuget) {
             Try {
                 set-psrepository -name PSGallery -InstallationPolicy trusted -ErrorAction 0
                 Write-Output 'Trusting PSGallery has repository'
             }Catch {
-                    Write-Output 'Not able to set psgallery as a trusted repository.'
+                Write-Output 'Not able to set psgallery as a trusted repository.'
             }
         }
         if (Get-PSRepository -name 'PSGallery') {
@@ -33,14 +33,13 @@ function installPowerCLI (){
         }
     }else {
         Write-output "POSH is not set to v5."
-    }# """
+    }
 }
 function installPowerShell() {
     if (($PSVersionTable).major -lt 5){
         Try {
             choco install Powershell -y -ErrorAction 0
-        }
-        Catch {
+        }Catch {
             Write-Output 'Powershell v5 did not get installed'
         }
     } else {
@@ -48,7 +47,7 @@ function installPowerShell() {
     }
     Try {
         restartComputer
-    }Catch{
+    }Catch {
         Write-Output 'did not restart'
     }
 }
