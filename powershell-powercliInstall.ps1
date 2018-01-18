@@ -58,6 +58,15 @@ function restartComputer() {
 #Tested below
 function installChocolatey(){
     Try {
+        Write-Output 'Checking if chocolatey is already installed.'
+        $Test = Test-path -Path 'C:\ProgramData\chocolatey\bin\choco.exe'
+        if ($Test) {
+            Write-Output 'Chocolatey is already installed. moving on.'
+        }else {
+            Write-Output 'Beginning Chocolatey install shortly'
+        }
+    }
+    Try {
         Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) -ErrorAction 0
     }Catch{
         Write-Output "Failed to install Chocolatey"
